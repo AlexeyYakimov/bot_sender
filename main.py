@@ -9,6 +9,24 @@ app = Flask(__name__)
 DATABASE = "messages.db"
 AUTH_KEY = os.getenv("AUTH_KEY")  # Load AUTH_KEY from environment variables
 
+# Example request for /sendMessage endpoint:
+# {
+#     "state": "occupy",        # Required: Must be "occupy" or "empty"
+#     "bot": "bot_token",       # Required: Telegram bot token
+#     "notification": true,     # Required: Whether to send with notification
+#     "chatId": "123456789"    # Required: Telegram chat ID to send message to
+# }
+#
+# Response format:
+# Success (200):
+# {}
+#
+# Error (400, 401, 500, 503):
+# {
+#     "error": "Error message",
+#     "details": "Detailed error message"  # Only included for some errors
+# }
+
 # Async endpoint to handle messages
 @app.route("/sendMessage", methods=["POST"])
 async def send_message():

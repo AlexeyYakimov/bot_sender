@@ -1,0 +1,10 @@
+ Room is now occupied
+Someone entered the room
+Room is in use
+Space is currently occupied
+The room is being used
+Occupancy detected
+Room status: Occupied
+Space is now in use
+Room is active
+Currently occupied

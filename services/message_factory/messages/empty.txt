@@ -1,0 +1,10 @@
+ Room is now empty
+Room is available
+Space is free
+No one in the room
+Room is vacant
+Space is available
+Room status: Empty
+Room is not in use
+Room is clear
+Space is unoccupied

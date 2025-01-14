@@ -12,8 +12,8 @@ async def send_telegram_notification(bot_token, chat_id, state, notification, me
                 "disable_notification": not notification
             }) as response:
                 if response.status != 200:
-                error_data = await response.json()
-                return False, error_data
+                    error_data = await response.json()
+                    return False, error_data
             return True, None
 
     # Try to send message with one retry

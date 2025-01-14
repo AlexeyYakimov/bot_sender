@@ -2,12 +2,9 @@ import sqlite3
 import aiosqlite
 import os  # Missing import for os.path.exists and os.getenv
 
-DATABASE = os.getenv("DATABASE", "messages.db")
+DATABASE = os.getenv("DATABASE", "sqlite")
 
 def init_db():
-    # Ensure database file exists
-    __create_db_file()
-    
     # Check if table exists
     with sqlite3.connect(DATABASE) as db:
         cursor = db.cursor()
@@ -29,12 +26,6 @@ def init_db():
                 )
             """)
             db.commit()
-            
-def __create_db_file():
-    # Check if database file exists
-    if not os.path.exists(DATABASE):
-        # Create empty file
-        open(DATABASE, 'a').close()
 
 async def save_data_to_db(bot, chat_id, notification, state):
     async with aiosqlite.connect(DATABASE) as db:

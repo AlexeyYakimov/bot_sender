@@ -3,6 +3,7 @@ from flask import Flask, request, jsonify
 import asyncio
 import db_utils as db
 from bot import send_telegram_notification
+from services.message_factory.factory import get_message
 
 app = Flask(__name__)
 DATABASE = "messages.db"
@@ -36,12 +37,30 @@ async def send_message():
 
     # Send notification to Telegram
     try:
-        message = f"State changed to: {state}"
-        await send_telegram_notification(bot, chat_id, state, notification, message)
-    except Exception as e:
-        app.logger.error(f"Error sending Telegram message: {str(e)}")
+        message = get_message(state)
+        await send_telegram_notification(bot, chat_id, notification, message)
+    except FileNotFoundError as e:
+        app.logger.error(f"Message file not found: {str(e)}")
         return jsonify({
-            "error": "Failed to send Telegram message",
+            "error": "Configuration error",
+            "details": "Message template file not found"
+        }), 500
+    except ValueError as e:
+        app.logger.error(f"Invalid message file: {str(e)}")
+        return jsonify({
+            "error": "Configuration error", 
+            "details": "Message template file is empty"
+        }), 500
+    except aiohttp.ClientError as e:
+        app.logger.error(f"Telegram API error: {str(e)}")
+        return jsonify({
+            "error": "Failed to send message",
+            "details": "Error connecting to Telegram API"
+        }), 503
+    except Exception as e:
+        app.logger.error(f"Unexpected error sending message: {str(e)}")
+        return jsonify({
+            "error": "Internal server error",
             "details": str(e)
         }), 500
 

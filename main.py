@@ -17,8 +17,8 @@ async def send_message():
     if auth_header != AUTH_KEY:
         return jsonify({"error": "Unauthorized"}), 401
 
-    # Validate JSON payload
-    data = await request.get_json()
+    # Validate JSON payload - get_json() is synchronous
+    data = request.get_json()  # Removed await
     required_fields = {"state", "bot", "notification", "chatId"}
     if not data or not required_fields.issubset(data.keys()):
         return jsonify({"error": "Invalid request, missing fields"}), 400

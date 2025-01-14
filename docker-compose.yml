@@ -13,9 +13,3 @@ services:
       - HOST_PORT=0.0.0.0:8000
       - AUTH_KEY=your_auth_key_here
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8000/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 5s 

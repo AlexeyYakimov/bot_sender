@@ -30,7 +30,7 @@ def init_db():
 
 
 async def save_data_to_db(bot, chat_id, notification, state):
-    async with aiosqlite.connect(DATABASE) as db:
+    async with aiosqlite.connect(f"services/db/{DATABASE}.db") as db:
         await db.execute("""
             INSERT INTO messages (state, bot, notification, chat_id)
             VALUES (?, ?, ?, ?)

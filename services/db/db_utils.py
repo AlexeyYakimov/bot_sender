@@ -1,18 +1,19 @@
 import sqlite3
 import aiosqlite
-import os  # Missing import for os.path.exists and os.getenv
+import os
 
 DATABASE = os.getenv("DATABASE", "sqlite")
 
+
 def init_db():
     # Check if table exists
-    with sqlite3.connect(DATABASE) as db:
+    with sqlite3.connect(f"services/db/{DATABASE}.db") as db:
         cursor = db.cursor()
         cursor.execute("""
             SELECT count(name) FROM sqlite_master 
             WHERE type='table' AND name='messages'
         """)
-        
+
         # Create table only if it doesn't exist
         if cursor.fetchone()[0] == 0:
             db.execute("""
@@ -26,6 +27,7 @@ def init_db():
                 )
             """)
             db.commit()
+
 
 async def save_data_to_db(bot, chat_id, notification, state):
     async with aiosqlite.connect(DATABASE) as db:

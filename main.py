@@ -1,13 +1,15 @@
 import os
+
+import aiohttp
 from flask import Flask, request, jsonify
-import asyncio
-import db_utils as db
+import services.db.db_utils as db
 from bot import send_telegram_notification
 from services.message_factory.factory import get_message
 
 app = Flask(__name__)
 DATABASE = "messages.db"
 AUTH_KEY = os.getenv("AUTH_KEY")  # Load AUTH_KEY from environment variables
+
 
 # Example request for /sendMessage endpoint:
 # {
@@ -66,7 +68,7 @@ async def send_message():
     except ValueError as e:
         app.logger.error(f"Invalid message file: {str(e)}")
         return jsonify({
-            "error": "Configuration error", 
+            "error": "Configuration error",
             "details": "Message template file is empty"
         }), 500
     except aiohttp.ClientError as e:

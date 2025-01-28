@@ -1,9 +1,10 @@
 import aiohttp
 import asyncio
 
+
 async def send_telegram_notification(bot_token, chat_id, notification, message):
     telegram_url = f"https://api.telegram.org/bot{bot_token}/sendMessage"
-    
+
     async def try_send_message():
         try:
             async with aiohttp.ClientSession() as session:
@@ -25,7 +26,7 @@ async def send_telegram_notification(bot_token, chat_id, notification, message):
         # Wait briefly before retry
         await asyncio.sleep(1)
         success, error_data = await try_send_message()
-        
+
         if not success:
             raise Exception(f"Failed to send Telegram message after retry: {error_data}")
 
